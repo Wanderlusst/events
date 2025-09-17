@@ -40,8 +40,15 @@ RUN touch database/database.sqlite
 RUN chown -R www-data:www-data /var/www
 RUN chmod -R 755 /var/www
 
+# Create startup script
+RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'touch database/database.sqlite' >> /start.sh && \
+    echo 'php artisan migrate --force' >> /start.sh && \
+    echo 'php artisan serve --host=0.0.0.0 --port=8000' >> /start.sh && \
+    chmod +x /start.sh
+
 # Expose port 8000
 EXPOSE 8000
 
-# Start PHP built-in server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start with our script
+CMD ["/start.sh"]
