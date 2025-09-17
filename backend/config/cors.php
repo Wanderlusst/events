@@ -19,7 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'https://events-xi-brown.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:3001',
+        '*'
+    ],
 
     'allowed_origins_patterns' => [],
 
