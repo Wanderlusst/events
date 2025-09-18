@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://events-kax8.onrender.com/api';
 
-console.log('API_BASE_URL:', API_BASE_URL);
-
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -80,9 +78,7 @@ export interface PaginatedResponse<T> {
 export const eventApi = {
   // Get all upcoming events
   getEvents: async (): Promise<ApiResponse<Event[]>> => {
-    console.log('Making API call to:', API_BASE_URL + '/events');
     const response = await api.get('/events');
-    console.log('API response received:', response);
     return response.data;
   },
 
@@ -115,19 +111,12 @@ export const eventApi = {
 export const attendeeApi = {
   // Register for an event
   register: async (eventId: number, data: RegisterAttendeeData): Promise<ApiResponse<Attendee>> => {
-    console.log('Registering attendee:', { eventId, data });
-    console.log('API URL:', `${API_BASE_URL}/events/${eventId}/register`);
-    
     try {
       const response = await api.post(`/events/${eventId}/register`, data);
-      console.log('Registration successful:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Registration error:', error);
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response?: { data?: unknown; status?: number } };
-        console.error('Error response:', axiosError.response?.data);
-        console.error('Error status:', axiosError.response?.status);
         
         // If we have a proper error response, throw it with the message
         if (axiosError.response?.data && typeof axiosError.response.data === 'object' && 'message' in axiosError.response.data) {

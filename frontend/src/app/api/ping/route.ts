@@ -6,8 +6,6 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    console.log(`[${new Date().toISOString()}] Ping job started`);
-    
     // Try multiple endpoints for better reliability
     const endpoints = [
       `${RENDER_BACKEND_URL}/api/health`,
@@ -21,8 +19,6 @@ export async function GET(request: NextRequest) {
     
     for (const endpoint of endpoints) {
       try {
-        console.log(`Trying endpoint: ${endpoint}`);
-        
         const response = await fetch(endpoint, {
           method: 'GET',
           headers: {
@@ -36,15 +32,11 @@ export async function GET(request: NextRequest) {
         responseTime = Date.now() - startTime;
         
         if (response.ok) {
-          console.log(`✅ Success with ${endpoint} (${responseTime}ms)`);
           success = true;
           break;
-        } else {
-          console.log(`❌ Failed with ${endpoint}: ${response.status}`);
         }
       } catch (error) {
         lastError = error;
-        console.log(`❌ Error with ${endpoint}:`, error instanceof Error ? error.message : 'Unknown error');
       }
     }
     
@@ -71,7 +63,6 @@ export async function GET(request: NextRequest) {
     
   } catch (error) {
     const responseTime = Date.now() - startTime;
-    console.error('Ping job failed:', error);
     
     return NextResponse.json({
       success: false,

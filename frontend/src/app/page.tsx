@@ -25,9 +25,7 @@ export default function Home() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      console.log('Fetching events...');
       const response = await eventApi.getEvents();
-      console.log('Response:', response);
       if (response.success) {
         setEvents(response.data);
       } else {
@@ -35,17 +33,12 @@ export default function Home() {
       }
     } catch (err) {
       setError('Failed to fetch events');
-      console.error('Error fetching events:', err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log('Environment check:', {
-      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-      NODE_ENV: process.env.NODE_ENV
-    });
     fetchEvents();
   }, []);
 
@@ -73,7 +66,7 @@ export default function Home() {
         }
       }
     } catch (err) {
-      console.error('Error refreshing events:', err);
+      // Error handling is done in fetchEvents
     }
   };
 

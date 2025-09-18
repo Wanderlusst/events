@@ -4,8 +4,6 @@ const RENDER_BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') 
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Keep-alive job triggered at:', new Date().toISOString());
-    
     // Ping the Render backend health endpoint
     const response = await fetch(`${RENDER_BACKEND_URL}/api/health`, {
       method: 'GET',
@@ -18,7 +16,6 @@ export async function GET(request: NextRequest) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Backend is alive:', data);
       
       return NextResponse.json({
         success: true,
@@ -27,8 +24,6 @@ export async function GET(request: NextRequest) {
         backendStatus: data,
       });
     } else {
-      console.error('Backend health check failed:', response.status, response.statusText);
-      
       return NextResponse.json({
         success: false,
         message: 'Backend health check failed',
@@ -37,8 +32,6 @@ export async function GET(request: NextRequest) {
       }, { status: 500 });
     }
   } catch (error) {
-    console.error('Keep-alive job failed:', error);
-    
     return NextResponse.json({
       success: false,
       message: 'Keep-alive job failed',

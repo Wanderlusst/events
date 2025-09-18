@@ -55,7 +55,6 @@ export default function EventDetailsDialog({ event, onClose, onAttendeeChanged }
       }
     } catch (err) {
       setError('Failed to fetch attendees');
-      console.error('Error fetching attendees:', err);
     } finally {
       setLoading(false);
     }
@@ -87,7 +86,6 @@ export default function EventDetailsDialog({ event, onClose, onAttendeeChanged }
         setError('Failed to register attendee');
       }
     } catch (err: unknown) {
-      console.error('Error registering attendee:', err);
       if (err && typeof err === 'object' && 'response' in err) {
         const axiosError = err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } } };
         if (axiosError.response?.data?.message) {
@@ -122,7 +120,6 @@ export default function EventDetailsDialog({ event, onClose, onAttendeeChanged }
         setError('Failed to remove attendee');
       }
     } catch (err) {
-      console.error('Error deleting attendee:', err);
       setError('Failed to remove attendee');
     }
   };

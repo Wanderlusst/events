@@ -92,7 +92,6 @@ export default function CreateEventDialog({ open, onOpenChange, onEventCreated }
         setError('Failed to create event');
       }
     } catch (err: unknown) {
-      console.error('Error creating event:', err);
       if (err && typeof err === 'object' && 'response' in err) {
         const axiosError = err as { response?: { data?: { message?: string } } };
         if (axiosError.response?.data?.message) {
